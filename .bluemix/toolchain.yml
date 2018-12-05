@@ -1,0 +1,54 @@
+version: '2'
+template:
+  name: "Toolchain for microservices application in kubernetes"
+  description: "Deploying Spring boot application to a container in kubernetes using Open Toolchain"
+  required:
+    - build
+    - repo
+  info:
+    git url: >-
+      [https://github.com/ibm-cloud-academy/Think-1819](https://github.com/ibm-cloud-academy/Think-1819)
+    git branch: >-
+      [master](https://github.com/ibm-cloud-academy/Think-1819/tree/master)
+toolchain:
+  name: 'Think1819-toolchain-{{timestamp}}'
+  template:
+    getting_started: "Load template"
+services:
+  repo:
+    service_id: hostedgit
+    parameters:
+      repo_name: 'Think1819-{{timestamp}}'
+      repo_url: 'https://github.com/ibm-cloud-academy/Think-1819'
+      type: clone
+      has_issues: true
+      enable_traceability: true
+  build:
+    service_id: pipeline
+    parameters:
+      services:
+        - repo
+      name: '{{services.repo.parameters.repo_name}}'
+      ui-pipeline: true
+      configuration:
+        content:
+          $text: pipeline.yml
+        env:
+          GIT_REPO: repo
+          CF_APP_NAME: '{{form.pipeline.parameters.app-name}}'
+          REGISTRY_REGION_ID: '{{form.pipeline.parameters.registry-region}}'
+          REGISTRY_NAMESPACE: '{{form.pipeline.parameters.registry-namespace}}'
+          API_KEY: '{{form.pipeline.parameters.api-key}}'
+          PROD_REGION_ID: '{{form.pipeline.parameters.prod-region}}'
+          PROD_CLUSTER_NAME: '{{form.pipeline.parameters.prod-cluster-name}}'
+          PROD_CLUSTER_NAMESPACE: '{{form.pipeline.parameters.prod-cluster-namespace}}'
+        execute: true
+  webide:
+    service_id: orion
+form:
+  pipeline:
+    parameters:
+      app-name: '{{services.repo.parameters.repo_name}}'
+      prod-cluster-namespace: "default"
+    schema:
+      $ref: deploy.json
