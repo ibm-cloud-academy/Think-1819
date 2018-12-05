@@ -5,7 +5,7 @@
     "type": "object",
     "properties": {
        "api-key": {
-            "description": "API key for logging in"
+            "description": "API key for logging in",
             "type": "string",
             "pattern": "\\S"
         },
