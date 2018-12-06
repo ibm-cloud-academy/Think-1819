@@ -29,3 +29,13 @@ dependencies {
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
+task docker {
+    doLast {
+        copy {
+            from 'build/libs/lightblue-catalog-0.0.1.jar'
+            into 'docker'
+        }
+        file("docker/lightblue-catalog-0.0.1.jar").renameTo(file("docker/app.jar"))
+    }
+}
