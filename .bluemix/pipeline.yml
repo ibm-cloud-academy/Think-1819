@@ -8,17 +8,6 @@ stages:
   triggers:
   - type: commit
   jobs:
-  - name: Gradle build
-    type: builder
-    artifact_dir: ''
-    build_type: gradle
-    script: |-
-      #!/bin/bash
-      # The default Gradle version is 1.12
-      # To use Gradle 2.9, uncomment the following line:
-      #export PATH="$GRADLE2_HOME/bin:$PATH"
-      ./gradlew build
-      ./gradlew docker
   - name: Build Docker image
     type: builder
     build_type: cr
@@ -43,16 +32,12 @@ stages:
       echo "GIT_BRANCH=${GIT_BRANCH}"
       echo "GIT_COMMIT=${GIT_COMMIT}"
 
-      # Minting image tag using format: BRANCH-BUILD_NUMBER-COMMIT_ID-TIMESTAMP
-      # e.g. master-3-50da6912-20181123114435
+      # Building using gradle and Java8
+      export JAVA_HOME=~/java8
+      ./gradlew build
+      ./gradlew docker
 
-      TIMESTAMP=$( date -u "+%Y%m%d%H%M%S")
-      IMAGE_TAG=${TIMESTAMP}
-      if [ ! -z "${GIT_COMMIT}" ]; then
-        GIT_COMMIT_SHORT=$( echo ${GIT_COMMIT} | head -c 8 ) 
-        IMAGE_TAG=${GIT_COMMIT_SHORT}-${IMAGE_TAG}
-      fi
-      IMAGE_TAG=${BUILD_NUMBER}-${IMAGE_TAG}
+      IMAGE_TAG=${BUILD_NUMBER}
       echo "=========================================================="
       echo -e "BUILDING CONTAINER IMAGE: ${IMAGE_NAME}:${IMAGE_TAG}"
       
@@ -111,7 +96,8 @@ stages:
       # ------------------
       # source: https://raw.githubusercontent.com/open-toolchain/commons/master/scripts/check_vulnerabilities.sh
       # Input env variables (can be received via a pipeline environment properties.file.
-
+      ls -la
+      find . -name build.properties
       # View build properties
       if [ -f build.properties ]; then 
         echo "build.properties:"
