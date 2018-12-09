@@ -44,7 +44,7 @@ stages:
       cd docker
       ibmcloud cr build -t ${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} .
 
-      ibmcloud cr image-inspect ${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
+      # ibmcloud cr image-inspect ${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
       cd ..
 
       # Set PIPELINE_IMAGE_URL for subsequent jobs in stage (e.g. Vulnerability Advisor)
@@ -55,7 +55,9 @@ stages:
       # will be able to reuse the env variables in their job shell scripts.
 
       # If already defined build.properties from prior build job, append to it.
-      cp build.properties $ARCHIVE_DIR/ || :
+      mkdir $ARCHIVE_DIR
+      cp deployment.yml $ARCHIVE_DIR/
+      touch $ARCHIVE_DIR/build.properties
 
       # IMAGE information from build.properties is used in Helm Chart deployment to set the release name
       echo "IMAGE_NAME=${IMAGE_NAME}" >> $ARCHIVE_DIR/build.properties
@@ -90,15 +92,7 @@ stages:
       #!/bin/bash
       # uncomment to debug the script
       # set -x
-      # copy the script below into your app code repo (e.g. ./scripts/check_vulnerabilities.sh) and 'source' it from your pipeline job
-      #    source ./scripts/check_vulnerabilities.sh
-      # alternatively, you can source it from online script:
-      #    source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/commons/master/scripts/check_vulnerabilities.sh")
-      # ------------------
-      # source: https://raw.githubusercontent.com/open-toolchain/commons/master/scripts/check_vulnerabilities.sh
-      # Input env variables (can be received via a pipeline environment properties.file.
-      ls -la
-      find . -name build.properties
+      
       # View build properties
       if [ -f build.properties ]; then 
         echo "build.properties:"
