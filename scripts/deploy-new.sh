@@ -54,7 +54,11 @@ echo ""
 echo "=========================================================="
 echo " Checking whether the application existed"
 
-appl=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "catalog-deployment" | wc -l`
+DEP_NAME="catalog-deployment"
+SVC_NAME="catalog-service"
+LBL_NAME="catalog"
+PORT="30111"
+appl=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_NAME}" | wc -l`
 if ((appl>0)); then
   echo " Application existed, deploying as a test instance "
   sed -i "s~^\([[:blank:]]*\)name: ${DEP_NAME}*$~\1name: test-${DEP_NAME}~" ${DEPLOYMENT_FILE}

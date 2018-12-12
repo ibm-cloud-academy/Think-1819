@@ -34,5 +34,5 @@ kubectl delete deployment ${DEP_NAME} --namespace ${CLUSTER_NAMESPACE}
 echo "=========================================================="
 echo " Rename green (test-catalog-deployment) to blue (catalog-deployment) "
 
-kubectl patch deployment test-${DEP_NAME} --namespace ${CLUSTER_NAMESPACE}  ...
+kubectl patch deployment test-${DEP_NAME} --namespace ${CLUSTER_NAMESPACE} -p '{ "metadata": { "name" : "${DEP_NAME}" } }'
 
