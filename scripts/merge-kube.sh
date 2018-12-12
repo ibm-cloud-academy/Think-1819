@@ -20,7 +20,7 @@ if ${UPDATE}!=true; then exit 0
 echo "=========================================================="
 echo " Modify image name for deployment to initiate rolling update "
 
-kubectl set image deployment ${DEP_NAME} --namespace ${CLUSTER_NAMESPACE} ${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
+kubectl set image deployment ${OLD_NAME} --namespace ${CLUSTER_NAMESPACE} ${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
 
 echo "=========================================================="
 echo " Delete green service "
@@ -30,9 +30,9 @@ kubectl delete service test-${SVC_NAME} --namespace ${CLUSTER_NAMESPACE}
 echo "=========================================================="
 echo " Delete green deployment "
 
-kubectl delete deployment test-${DEP_NAME} --namespace ${CLUSTER_NAMESPACE}
+kubectl delete deployment ${DEP_NAME}-${IMAGE_TAG} --namespace ${CLUSTER_NAMESPACE}
 
 echo "=========================================================="
 
-kubectl rollout status deployment/${DEP_NAME} --namespace ${CLUSTER_NAMESPACE}
+kubectl rollout status deployment/${OLD_NAME} --namespace ${CLUSTER_NAMESPACE}
 

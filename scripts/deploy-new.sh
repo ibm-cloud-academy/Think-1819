@@ -60,12 +60,14 @@ LBL_NAME="catalog"
 PORT="30111"
 appl=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_NAME}" | wc -l`
 if ((appl>0)); then
+  OLD_NAME=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_NAME}" | awk '{print $1}'`
   echo " Application existed, deploying as a test instance "
-  sed -i "s~^\([[:blank:]]*\)name: ${DEP_NAME}*$~\1name: test-${DEP_NAME}~" ${DEPLOYMENT_FILE}
+  sed -i "s~^\([[:blank:]]*\)name: ${DEP_NAME}*$~\1name: ${DEP_NAME}-${IMAGE_TAG}~" ${DEPLOYMENT_FILE}
   sed -i "s~^\([[:blank:]]*\)name: ${SVC_NAME}*$~\1name: test-${SVC_NAME}~" ${DEPLOYMENT_FILE}
   sed -i "s~^\([[:blank:]]*\)app: ${LBL_NAME}*$~\1app: test-${LBL_NAME}~" ${DEPLOYMENT_FILE}
   sed -i "s~^\([[:blank:]]*\)nodePort: {PORT}*$~\1nodePort: 31101~" ${DEPLOYMENT_FILE}
   echo "UPDATE=1" >> ${ARCHIVE_DIR}/build.properties
+  echo "OLD_NAME=${OLD_NAME}" >> ${ARCHIVE_DIR}/build.properties
   echo "DEP_NAME=${DEP_NAME}" >> ${ARCHIVE_DIR}/build.properties
   echo "SVC_NAME=${SVC_NAME}" >> ${ARCHIVE_DIR}/build.properties
   echo "LBL_NAME=${LBL_NAME}" >> ${ARCHIVE_DIR}/build.properties

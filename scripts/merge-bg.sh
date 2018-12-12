@@ -19,7 +19,7 @@ if ${UPDATE}!=true then exit 0
 echo "=========================================================="
 echo " Modify label from green (app: test-catalog) to match blue (app: catalog) "
 
-kubectl label --overwrite app=${LBL_NAME} --namespace ${CLUSTER_NAMESPACE} test-${DEP_NAME}
+kubectl label --overwrite app=${LBL_NAME} --namespace ${CLUSTER_NAMESPACE} ${DEP_NAME}-${IMAGE_TAG}
 
 echo "=========================================================="
 echo " Delete green service "
@@ -29,10 +29,8 @@ kubectl delete service test-${SVC_NAME} --namespace ${CLUSTER_NAMESPACE}
 echo "=========================================================="
 echo " Delete blue deployment "
 
-kubectl delete deployment ${DEP_NAME} --namespace ${CLUSTER_NAMESPACE}
+kubectl delete deployment ${OLD_NAME} --namespace ${CLUSTER_NAMESPACE}
 
 echo "=========================================================="
-echo " Rename green (test-catalog-deployment) to blue (catalog-deployment) "
-
-kubectl patch deployment test-${DEP_NAME} --namespace ${CLUSTER_NAMESPACE} -p '{ "metadata": { "name" : "${DEP_NAME}" } }'
-
+echo " Completed "
+echo "=========================================================="
