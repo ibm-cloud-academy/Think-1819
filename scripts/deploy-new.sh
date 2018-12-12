@@ -65,13 +65,7 @@ if ((appl>0)); then
   sed -i "s~^\([[:blank:]]*\)name: ${DEP_NAME}*$~\1name: ${DEP_NAME}-${IMAGE_TAG}~" ${DEPLOYMENT_FILE}
   sed -i "s~^\([[:blank:]]*\)name: ${SVC_NAME}*$~\1name: test-${SVC_NAME}~" ${DEPLOYMENT_FILE}
   sed -i "s~^\([[:blank:]]*\)app: ${LBL_NAME}*$~\1app: test-${LBL_NAME}~" ${DEPLOYMENT_FILE}
-  sed -i "s~^\([[:blank:]]*\)nodePort: {PORT}*$~\1nodePort: 31101~" ${DEPLOYMENT_FILE}
-  echo "UPDATE=1" >> ${ARCHIVE_DIR}/build.properties
-  echo "OLD_NAME=${OLD_NAME}" >> ${ARCHIVE_DIR}/build.properties
-  echo "DEP_NAME=${DEP_NAME}" >> ${ARCHIVE_DIR}/build.properties
-  echo "SVC_NAME=${SVC_NAME}" >> ${ARCHIVE_DIR}/build.properties
-  echo "LBL_NAME=${LBL_NAME}" >> ${ARCHIVE_DIR}/build.properties
-  echo "PORT=${PORT}" >> ${ARCHIVE_DIR}/build.properties
+  sed -i "s~^\([[:blank:]]*\)nodePort: ${PORT}*$~\1nodePort: 31101~" ${DEPLOYMENT_FILE}
 fi
 
 sed -i "s~^\([[:blank:]]*\)image:.*$~\1image: ${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}~" ${DEPLOYMENT_FILE}

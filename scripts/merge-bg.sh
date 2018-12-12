@@ -14,7 +14,17 @@ if [ -f build.properties ]; then
 else 
   echo "build.properties : not found"
 fi 
-if ${UPDATE}!=true then exit 0
+DEP_NAME="catalog-deployment"
+SVC_NAME="catalog-service"
+LBL_NAME="catalog"
+PORT="30111"
+appl=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_NAME}" | wc -l`
+
+if ((appl==1)); then
+  exit
+fi
+
+OLD_NAME=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_NAME}" | grep -v "-${IMAGE_TAG}" | awk '{print $1}'`
 
 echo "=========================================================="
 echo " Modify label from green (app: test-catalog) to match blue (app: catalog) "
