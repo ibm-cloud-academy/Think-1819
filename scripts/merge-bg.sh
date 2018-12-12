@@ -28,7 +28,7 @@ OLD_NAME=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_
 echo "=========================================================="
 echo " Modify selector version to match blue (ver: IMAGE_TAG) "
 
-kubectl set selector --namespace ${CLUSTER_NAMESPACE} service ${SVC_NAME} ver=${IMAGE_TAG}
+kubectl set selector --namespace ${CLUSTER_NAMESPACE} service ${SVC_NAME} ver=v${IMAGE_TAG}
 
 echo "=========================================================="
 echo " Delete green service "

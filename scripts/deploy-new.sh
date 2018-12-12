@@ -63,7 +63,7 @@ if ((appl>0)); then
   echo " Application existed, deploying as a test instance "
   sed -i "s~^\([[:blank:]]*\)name: ${DEP_NAME}*$~\1name: ${DEP_NAME}-${IMAGE_TAG}~" ${DEPLOYMENT_FILE}
   sed -i "s~^\([[:blank:]]*\)name: ${SVC_NAME}*$~\1name: test-${SVC_NAME}~" ${DEPLOYMENT_FILE}
-  sed -i "s~^\([[:blank:]]*\)ver: 0*$~\1ver: ${IMAGE_TAG}~g" ${DEPLOYMENT_FILE}
+  sed -i "s~^\([[:blank:]]*\)ver: v0*$~\1ver: v${IMAGE_TAG}~g" ${DEPLOYMENT_FILE}
   sed -i "s~^\([[:blank:]]*\)nodePort: ${PORT}*$~\1nodePort: 31101~" ${DEPLOYMENT_FILE}
 fi
 

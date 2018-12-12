@@ -9,7 +9,7 @@ spec:
       name: pod-catalog
       labels:
         app: catalog
-        ver: 0
+        ver: v0
     spec:
       containers:
         - name: catalog
@@ -29,7 +29,7 @@ spec:
   type: NodePort
   selector:
     app: catalog
-    ver: 0
+    ver: v0
   ports:
    - protocol: TCP
      port: 8080
