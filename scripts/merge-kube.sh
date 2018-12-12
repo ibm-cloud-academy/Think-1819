@@ -17,7 +17,6 @@ fi
 
 DEP_NAME="catalog-deployment"
 SVC_NAME="catalog-service"
-LBL_NAME="catalog"
 PORT="30111"
 appl=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_NAME}" | wc -l`
 

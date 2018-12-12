@@ -16,7 +16,6 @@ else
 fi 
 DEP_NAME="catalog-deployment"
 SVC_NAME="catalog-service"
-LBL_NAME="catalog"
 PORT="30111"
 appl=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_NAME}" | wc -l`
 
@@ -27,9 +26,9 @@ fi
 OLD_NAME=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_NAME}" | grep -v "-${IMAGE_TAG}" | awk '{print $1}'`
 
 echo "=========================================================="
-echo " Modify label from green (app: test-catalog) to match blue (app: catalog) "
+echo " Modify selector version to match blue (ver: IMAGE_TAG) "
 
-kubectl label --overwrite app=${LBL_NAME} --namespace ${CLUSTER_NAMESPACE} ${DEP_NAME}-${IMAGE_TAG}
+kubectl set selector --namespace ${CLUSTER_NAMESPACE} service ${SVC_NAME} ver=${IMAGE_TAG}
 
 echo "=========================================================="
 echo " Delete green service "
