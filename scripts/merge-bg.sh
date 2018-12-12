@@ -23,7 +23,7 @@ if ((appl==1)); then
   exit
 fi
 
-OLD_NAME=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_NAME}" | grep -v "-${IMAGE_TAG}" | awk '{print $1}'`
+OLD_NAME=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_NAME}" | grep -v "\-${IMAGE_TAG}" | awk '{print $1}'`
 
 echo "=========================================================="
 echo " Modify selector version to match blue (ver: IMAGE_TAG) "
