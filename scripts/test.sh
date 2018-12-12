@@ -35,7 +35,12 @@ PORT=$( kubectl get services --namespace ${CLUSTER_NAMESPACE} | grep ${APP_SERVI
 
 echo "Testing http://${IP_ADDR}:${PORT}/items"
 
-curl "http://${IP_ADDR}:${PORT}/items"
+httprc=`curl --write-out %{http_code} --silent --output /dev/null "http://${IP_ADDR}:${PORT}/items"`
 
-exit $?
+if ((httprc!=200)); then
+  exit 100
+else
+  exit $?
+fi
+
 
