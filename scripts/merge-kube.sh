@@ -29,7 +29,7 @@ OLD_NAME=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_
 echo "=========================================================="
 echo " Modify image name for deployment to initiate rolling update "
 
-kubectl set image deployment ${OLD_NAME} --namespace ${CLUSTER_NAMESPACE} ${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
+kubectl set image deployment/${OLD_NAME} catalog=${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} --namespace ${CLUSTER_NAMESPACE}
 
 echo "=========================================================="
 echo " Delete green service "
