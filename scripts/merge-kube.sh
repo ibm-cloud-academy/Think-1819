@@ -26,6 +26,8 @@ fi
 
 OLD_NAME=`kubectl get deployment --namespace ${CLUSTER_NAMESPACE} | grep "${DEP_NAME}" | grep -v "\-${IMAGE_TAG}" | awk '{print $1}'`
 
+# kubectl scale --replicas=2 deployment/${OLD_NAME} --namespace ${CLUSTER_NAMESPACE}
+
 echo "=========================================================="
 echo " Modify image name for deployment to initiate rolling update "
 
@@ -45,3 +47,4 @@ echo "=========================================================="
 
 kubectl rollout status deployment/${OLD_NAME} --namespace ${CLUSTER_NAMESPACE}
 
+# kubectl scale --replicas=1 deployment/${OLD_NAME} --namespace ${CLUSTER_NAMESPACE}
